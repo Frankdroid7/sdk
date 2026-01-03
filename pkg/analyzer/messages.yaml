@@ -1566,6 +1566,57 @@ CompileTimeErrorCode:
         print(x);
       }
       ```
+
+  finalLocalNotDefinitelyAssigned:
+    type: compileTimeError
+    parameters:
+      String variableName: the name of the variable
+    problemMessage: "The final variable '#variableName' is not definitely assigned."
+    correctionMessage: "Ensure '#variableName' is assigned exactly once on all execution paths."
+    hasPublishedDocs: true
+    documentation: |-
+      #### Description
+
+      The analyzer produces this diagnostic when a local variable declared as
+      final is not definitely assigned.
+
+      Final variables must be assigned exactly once, and the assignment must
+      occur on all possible execution paths.
+
+      #### Example
+
+      The following code produces this diagnostic because `x` is assigned only
+      conditionally:
+
+      ```dart
+      void f(bool condition) {
+        final int x;
+        if (condition) {
+          x = 1;
+        }
+        print(x);
+      }
+      ```
+
+      #### Common fixes
+
+      Assign the variable on all execution paths:
+
+      ```dart
+      void f(bool condition) {
+        final int x;
+        if (condition) {
+          x = 1;
+        } else {
+          x = 2;
+        }
+        print(x);
+      }
+      ```
+
+      Alternatively, initialize the variable at its declaration or mark it as
+      `late`.
+
   assignmentToFinalNoSetter:
     type: compileTimeError
     parameters:
